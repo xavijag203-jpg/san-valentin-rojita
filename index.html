@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>San Valentín 💖</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    color: white;
+    overflow: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 380px;
+    margin: 20px auto;
+    background: rgba(255,255,255,0.18);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+img {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-size: 22px;
+    margin: 15px 0;
+}
+
+.buttons {
+    position: relative;
+    height: 130px;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    padding: 15px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+#yesBtn {
+    background: #ff4d6d;
+    color: white;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    font-size: 20px;
+}
+
+#noBtn {
+    background: #6c757d;
+    color: white;
+    top: 10px;
+    left: 20px;
+}
+
+#finalMessage {
+    display: none;
+    font-size: 20px;
+    margin-top: 20px;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* ❤️ Corazones */
+.heart {
+    position: fixed;
+    font-size: 20px;
+    animation: floatUp linear forwards;
+    opacity: 0.9;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-120vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Música -->
+<audio id="music" loop>
+    <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<div class="container">
+    <img src="foto.jpg">
+    <img src="gif.gif">
+
+    <h1>¿Quieres ser mi San Valentín, Anahí? 💕</h1>
+
+    <div class="buttons">
+        <button id="yesBtn" onclick="accept()">Sí 💖</button>
+        <button id="noBtn" onmouseover="escapeNo()">No 😅</button>
+    </div>
+
+    <div id="finalMessage">
+        Perfecto amor mío 💘<br><br>
+        Anahí, tenemos una cita el<br>
+        <b>14 de febrero a las 5:00</b><br>
+        Tú y yo 😍
+    </div>
+</div>
+
+<script>
+let size = 20;
+let musicStarted = false;
+const music = document.getElementById("music");
+
+function startMusic() {
+    if (!musicStarted) {
+        music.play();
+        musicStarted = true;
+    }
+}
+
+function escapeNo() {
+    startMusic();
+
+    const noBtn = document.getElementById("noBtn");
+    const box = document.querySelector(".buttons");
+
+    const maxX = box.clientWidth - noBtn.offsetWidth;
+    const maxY = box.clientHeight - noBtn.offsetHeight;
+
+    noBtn.style.left = Math.random() * maxX + "px";
+    noBtn.style.top = Math.random() * maxY + "px";
+
+    size += 8;
+    const yesBtn = document.getElementById("yesBtn");
+    yesBtn.style.fontSize = size + "px";
+    yesBtn.style.padding = "18px " + (size + 20) + "px";
+}
+
+function accept() {
+    startMusic();
+
+    // 📳 Vibración
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 300]);
+    }
+
+    document.querySelector(".buttons").style.display = "none";
+    document.getElementById("finalMessage").style.display = "block";
+
+    // 💖 Lluvia de corazones
+    let rain = setInterval(() => {
+        for (let i = 0; i < 5; i++) {
+            createHeart();
+        }
+    }, 150);
+
+    setTimeout(() => clearInterval(rain), 6000);
+}
+
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.bottom = "-20px";
+    heart.style.fontSize = Math.random() * 25 + 15 + "px";
+    heart.style.animationDuration = Math.random() * 2 + 4 + "s";
+
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 6000);
+}
+</script>
+
+</body>
+</html>
